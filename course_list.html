@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course List - College Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <header class="bg-white shadow">
+        <nav class="container mx-auto px-1 py-2.5">
+            
+            <div class="flex items-center justify-between">      
+                <a href="course_list.html" class="text-gray-800 hover:text-gray-900"><h1 class="text-2xl font-bold">Course List</h1></a>
+                <a href="dashboard.html" class="text-gray-800 hover:text-gray-900"><h1 class="text-2xl font-bold">Dashboard</h1></a>
+                <a href="students/profile.html" class="text-gray-800 hover:text-gray-900"><h1 class="text-2xl font-bold">Students</h1></a>
+                
+                <div class="flex items-right"></div>
+                    <img src="profile_pic.png" alt="Profile Picture" class="rounded-full h-12 w-12 object-cover">
+                    <span class="ml-2 text-sm text-gray-600">John Doe</span>
+                </div>
+        </nav>
+    </header>
+    <main class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <table class="w-full table-auto">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="px-4 py-2 text-left">Course Code</th>
+                        <th class="px-4 py-2 text-left">Course Name</th>
+                        <th class="px-4 py-2 text-left">Instructor</th>
+                        <th class="px-4 py-2 text-left">Credits</th>
+                        <th class="px-4 py-2 text-left">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-t px-4 py-2">CS101</td>
+                        <td class="border-t px-4 py-2">Introduction to Programming</td>
+                        <td class="border-t px-4 py-2">Dr. Smith</td>
+                        <td class="border-t px-4 py-2">3</td>
+                        <td class="border-t px-4 py-2">
+                            <button class="bg-blue-500 text-white px-2 py-1 rounded">Enroll</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border-t px-4 py-2">MATH201</td>
+                        <td class="border-t px-4 py-2">Linear Algebra</td>
+                        <td class="border-t px-4 py-2">Prof. Johnson</td>
+                        <td class="border-t px-4 py-2">4</td>
+                        <td class="border-t px-4 py-2">
+                            <button class="bg-blue-500 text-white px-2 py-1 rounded">Enroll</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

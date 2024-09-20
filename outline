@@ -1,0 +1,23 @@
+```
+/
+├── index.html
+├── login.html
+├── dashboard.html
+├── students/
+│   ├── list.html
+│   ├── profile.html
+│   └── grades.html
+├── courses/
+│   ├── list.html
+│   └── details.html
+├── faculty/
+│   ├── list.html
+│   └── profile.html
+├── admin/
+│   ├── users.html
+│   ├── reports.html
+│   └── settings.html
+└── assets/
+    ├── css/
+    └── js/
+```
