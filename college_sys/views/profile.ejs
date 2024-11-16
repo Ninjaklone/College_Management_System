@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile - College Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <header class="bg-white shadow">
+        <nav class="container mx-auto flex justify-between items-center p-4">
+            <h1 class="text-2xl font-bold text-blue-600">Student Profile</h1>
+            <div class="flex space-x-4">
+                <a href="/course_list" class="text-gray-800 hover:text-blue-600">Course List</a>
+                <a href="/dashboard" class="text-gray-800 hover:text-blue-600">Dashboard</a>
+                <div>
+                    <img src="profile_pic.png" alt="Profile Picture" class="rounded-full h-10 w-10 object-cover">
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="container mx-auto p-6">
+        <div class="bg -white rounded-lg shadow-md overflow-hidden">
+            <h2 class="text-xl font-semibold p-4 border-b">Profile Details</h2>
+            <div class="p-4">
+                <p class="text-lg"><strong>Name:</strong> John Doe</p>
+                <p class="text-lg"><strong>Email:</strong> john.doe@example.com</p>
+                <p class="text-lg"><strong>Enrolled Courses:</strong></p>
+                <ul class="list-disc pl-5">
+                    <li>CS101 - Introduction to Programming</li>
+                    <li>MATH201 - Linear Algebra</li>
+                </ul>
+            </div>
+            <div class="p-4">
+                <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Edit Profile</button>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
