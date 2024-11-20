@@ -2,58 +2,72 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course List - College Management System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title><%= title %></title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
-    <header class="bg-white shadow">
-        <nav class="container mx-auto flex justify-between items-center p-4">
-            <h1 class="text-2xl font-bold text-blue-600">Course List</h1>
-            <div class="flex space-x-4">
-                <a href="/dashboard" class="text-gray-800 hover:text-blue-600">Dashboard</a>
-                <a href="/profile" class="text-gray-800 hover:text-blue-600">Profile</a>
+    <!-- Navbar with Courses Highlight -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex space-x-4">
+                    <a href="/dashboard" class="text-gray-600 hover:bg-gray-200 px-3 py-2 rounded-md">Dashboard</a>
+                    <a href="/course_list" class="bg-blue-100 text-blue-700 px-3 py-2 rounded-md">Courses</a>
+                    <a href="/profile" class="text-gray-600 hover:bg-gray-200 px-3 py-2 rounded-md">Profile</a>
+                </div>
                 <div>
-                    <img src="profile_pic.png" alt="Profile Picture" class="rounded-full h-10 w-10 object-cover">
+                    <a href="/login" class="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600">Logout</a>
                 </div>
             </div>
-        </nav>
-    </header>
-    <main class="container mx-auto p-6">
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <h2 class="text-xl font-semibold p-4 border-b">Available Courses</h2>
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-200">
-                    <tr>
-                        <th class="px-4 py-2 text-left">Course Code</th>
-                        <th class="px-4 py-2 text-left">Course Name</th>
-                        <th class="px-4 py-2 text-left">Instructor</th>
-                        <th class="px-4 py-2 text-left">Credits</th>
-                        <th class="px-4 py-2 text-left">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    <tr>
-                        <td class="px-4 py-2">CS101</td>
-                        <td class="px-4 py-2">Introduction to Programming</td>
-                        <td class="px-4 py-2">Dr. Smith</td>
-                        <td class="px-4 py-2">3</td>
-                        <td class="px-4 py-2">
-                            <button class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Enroll</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="px-4 py-2">MATH201</td>
-                        <td class="px-4 py-2">Linear Algebra</td>
-                        <td class="px-4 py-2">Prof. Johnson</td>
-                        <td class="px-4 py-2">4</td>
-                        <td class="px-4 py-2">
-                            <button class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Enroll</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
-    </main>
+    </nav>
+
+    <div class="container mx-auto p-6 max-w-3xl">
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <div class="p-6">
+                <h1 class="text-3xl font-bold mb-6 text-center">Course List</h1>
+                
+                <% if (courses && courses.length > 0) { %>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                                <tr>
+                                    <th class="px-6 py-3">Course Code</th>
+                                    <th class="px-6 py-3">Course Name</th>
+                                    <th class="px-6 py-3">Semester</th>
+                                    <th class="px-6 py-3">Year</th>
+                                    <% if (userRole === 'student') { %>
+                                        <th class="px-6 py-3">Actions</th>
+                                    <% } %>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% courses.forEach(function(course) { %>
+                                    <tr class="bg-white border-b">
+                                        <td class="px-6 py-4"><%= course.code %></td>
+                                        <td class="px-6 py-4"><%= course.name %></td>
+                                        <td class="px-6 py-4"><%= course.semester %></td>
+                                        <td class="px-6 py-4"><%= course.year %></td>
+                                        <% if (userRole === 'student') { %>
+                                            <td class="px-6 py-4">
+                                                <form action="/course_list/enroll" method="POST" class="inline">
+                                                    <input type="hidden" name="courseId" value="<%= course.id %>">
+                                                    <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
+                                                        Enroll
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        <% } %>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } else { %>
+                    <p class="text-gray-600">No courses found.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
