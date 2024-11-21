@@ -1,13 +1,19 @@
 var express = require('express');
 var router = express.Router();
 const db = require('../db');
+const { authMiddleware } = require('../auth');
 
 
+// In routes/login.js (set root)
+// router.get('/', function(req, res, next) {
+//     // Redirect to dashboard
+//     res.redirect('/login');
+// });
 /* GET dashboard page. */
-router.get('/dashboard', function(req, res, next) {
+router.get('/dashboard', authMiddleware,function(req, res, next) {
   
-    // Replace this with session-based authentication later)
-    const userId = 1; // This should come from the user's session
+    //use authenticated
+    const userId = req.user.userId;
 
     // Fetch user details
     db.query(`
