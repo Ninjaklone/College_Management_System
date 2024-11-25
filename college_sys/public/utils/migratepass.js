@@ -4,10 +4,10 @@ const { hashPassword } = require('../utils/passwordUtils');
 async function convertPasswords() {
     // Database connection configuration
     const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'qwertyuiop',
-        database: 'college_man_sys'
+        host: process.env.HOST,
+        user: process.env.USER,
+        password: process.env.PASSWORD,
+        database: process.env.DATABASE,
     });
 
     try {
