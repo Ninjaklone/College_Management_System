@@ -7,6 +7,7 @@ const http = require('http');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const { authMiddleware } = require('./auth');
+const flash = require('express-flash');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -27,6 +28,7 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: false } // Set to true if using HTTPS
 }));
+app.use(flash());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));

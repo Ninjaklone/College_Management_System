@@ -22,26 +22,147 @@
         </div>
     </nav>
 
-    <div class="container mx-auto p-6 max-w-xl">
+    <!-- Flash Messages -->
+    <% if (messages.success) { %>
+        <div class="max-w-2xl mx-auto mt-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+            <%= messages.success %>
+        </div>
+    <% } %>
+    <% if (messages.error) { %>
+        <div class="max-w-2xl mx-auto mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            <%= messages.error %>
+        </div>
+    <% } %>
+
+    <div class="container mx-auto p-6 max-w-2xl">
         <div class="bg-white shadow-md rounded-lg overflow-hidden">
             <div class="p-6">
                 <h1 class="text-3xl font-bold mb-6 text-center">User Profile</h1>
                 
-                <div class="flex justify-center mb-6">
-                    <img src="<%= profilePic %>" alt="Profile Picture" class="rounded-full w-32 h-32 object-cover">
+                <!-- Profile Header -->
+                <div class="flex items-center mb-8">
+                    <div class="flex-shrink-0">
+                        <img src="<%= profilePic %>" alt="Profile Picture" class="rounded-full w-32 h-32 object-cover">
+                    </div>
+                    <div class="ml-6">
+                        <h2 class="text-2xl font-semibold"><%= user.first_name %> <%= user.last_name %></h2>
+                        <p class="text-gray-600"><%= user.role.charAt(0).toUpperCase() + user.role.slice(1) %></p>
+                        <p class="text-gray-600"><%= user.email %></p>
+                    </div>
                 </div>
 
-                <form action="/profile" method="POST" class="space-y-4">
-                    <!-- Rest of the existing profile form content remains the same -->
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
-                            <input type="text" name="first_name" id="first_name" 
-                                value="<%= user.first_name %>" 
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
-                                required>
+                <!-- Profile Form -->
+                <form action="/profile" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    <!-- Profile Picture Upload -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Update Profile Picture</label>
+                        <input type="file" name="profile_pic" accept="image/*" 
+                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                    </div>
+
+                    <!-- Basic Information -->
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Basic Information</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
+                                <input type="text" name="first_name" id="first_name" 
+                                    value="<%= user.first_name %>" 
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    required>
+                            </div>
+                            <div>
+                                <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
+                                <input type="text" name="last_name" id="last_name" 
+                                    value="<%= user.last_name %>" 
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    required>
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                                <input type="email" name="email" id="email" 
+                                    value="<%= user.email %>" 
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    required>
+                            </div>
                         </div>
-                        <!-- Other form fields remain the same -->
+                    </div>
+
+                    <!-- Role-Specific Information -->
+                    <% if (user.role === 'student') { %>
+                        <!-- Student Courses Section -->
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h3 class="text-lg font-medium text-gray-900 mb-4">Enrolled Courses</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Code</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Course</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Semester</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Grade</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <% courses.forEach(function(course) { %>
+                                            <tr>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= course.code %></td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= course.name %></td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= course.semester %> <%= course.year %></td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= course.grade || 'N/A' %></td>
+                                            </tr>
+                                        <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <% } else if (user.role === 'faculty') { %>
+                        <!-- Faculty Information -->
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h3 class="text-lg font-medium text-gray-900 mb-4">Faculty Information</h3>
+                            <div>
+                                <label for="department" class="block text-sm font-medium text-gray-700">Department</label>
+                                <input type="text" name="department" id="department" 
+                                    value="<%= user.department %>" 
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                    required>
+                            </div>
+                        </div>
+
+                        <!-- Faculty Courses Section -->
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h3 class="text-lg font-medium text-gray-900 mb-4">Assigned Courses</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Code</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Course</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Semester</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Year</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        <% courses.forEach(function(course) { %>
+                                            <tr>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= course.code %></td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= course.name %></td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= course.semester %></td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= course.year %></td>
+                                            </tr>
+                                        <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <% } %>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-end">
+                        <button type="submit" 
+                            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            Save Changes
+                        </button>
                     </div>
                 </form>
             </div>
