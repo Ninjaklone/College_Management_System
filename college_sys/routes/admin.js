@@ -21,6 +21,7 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
                 u.username,
                 u.email,
                 u.role,
+                u.active,
                 COALESCE(s.first_name, f.first_name) as first_name,
                 COALESCE(s.last_name, f.last_name) as last_name
             FROM users u

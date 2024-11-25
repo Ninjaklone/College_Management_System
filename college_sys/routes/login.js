@@ -44,13 +44,19 @@ router.post('/', async (req, res) => {
             return res.redirect('/login');
         }
 
+        // Set user as active
+        await db.promise().query(
+            'UPDATE users SET active = true WHERE id = ?',
+            [user.id]
+        );
+
         // Store user info in session
         req.session.userId = user.id;
         req.session.role = user.role;
 
         // Redirect based on role
         if (user.role === 'admin') {
-            return res.redirect('/admin/dashboard');  // Make sure this matches your route
+            return res.redirect('/admin/dashboard');
         } else {
             return res.redirect('/dashboard');
         }

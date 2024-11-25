@@ -20,6 +20,7 @@ var courseListRouter = require('./routes/course_list');
 var profileRouter = require('./routes/profile');
 const registerRouter = require('./routes/register');
 const adminRouter = require('./routes/admin');
+const logoutRouter = require('./routes/logout');
 
 
 // Middleware
@@ -55,6 +56,7 @@ app.use('/course_list', courseListRouter);
 app.use('/profile', profileRouter);
 app.use('/register', registerRouter);
 app.use('/admin', adminRouter);
+app.use('/logout', logoutRouter);
 
 
 //Server (HTTP Server)

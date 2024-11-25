@@ -16,11 +16,13 @@
                     <a href="/profile" class="text-gray-600 hover:bg-gray-200 px-3 py-2 rounded-md">Profile</a>
                 </div>
                 <div>
-                    <a href="/logout" 
-                       class="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 transition-colors duration-200"
-                       onclick="return confirm('Are you sure you want to logout?')">
-                        Logout
-                    </a>
+                    <form action="/logout" method="POST" class="inline">
+                        <button type="submit" 
+                                class="bg-blue-500 text-white px-3 py-2 rounded-md hover:bg-blue-600 transition-colors duration-200"
+                                onclick="return confirm('Are you sure you want to logout?')">
+                            Logout
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

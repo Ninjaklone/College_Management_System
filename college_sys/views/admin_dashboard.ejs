@@ -17,11 +17,13 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <span class="text-sm">Welcome, <%= user.first_name %></span>
-                    <a href="/logout" 
-                       class="bg-indigo-700 px-3 py-2 rounded-md hover:bg-indigo-800 transition-colors duration-200"
-                       onclick="return confirm('Are you sure you want to logout?')">
-                        Logout
-                    </a>
+                    <form action="/logout" method="POST" class="inline">
+                        <button type="submit" 
+                                class="bg-indigo-700 px-3 py-2 rounded-md hover:bg-indigo-800 transition-colors duration-200"
+                                onclick="return confirm('Are you sure you want to logout?')">
+                            Logout
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
