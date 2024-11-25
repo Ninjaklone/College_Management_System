@@ -50,13 +50,27 @@ function authMiddleware(req, res, next) {
     
     // If authenticated, attach user to request for further use
     req.user = {
-        userId: req.session.userId
+        userId: req.session.userId,
+        role: req.session.role
     };
     console.log('User authenticated, proceeding to next middleware')
     next();
 }
 
+const adminAuthMiddleware = (req, res, next) => {
+    if (!req.session.userId) {
+        return res.redirect('/login');
+    }
+    
+    if (req.session.role !== 'admin') {
+        req.flash('error', 'Unauthorized access');
+        return res.redirect('/dashboard');
+    }
+    
+    next();
+};
 
 module.exports = {
-    authMiddleware
+    authMiddleware,
+    adminAuthMiddleware
 };

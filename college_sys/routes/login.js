@@ -22,45 +22,43 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const { username, password } = req.body;
-
     try {
-        // Fetch user by username
+        const { username, password } = req.body;
+        
+        // Get user with role
         const [users] = await db.promise().query(
-            'SELECT * FROM users WHERE username = ?', 
+            'SELECT id, password, role FROM users WHERE username = ?',
             [username]
         );
 
         if (users.length === 0) {
-            return res.render('login', { 
-                title: 'Login', 
-                error: 'Invalid username or password' 
-            });
+            req.flash('error', 'Invalid username or password');
+            return res.redirect('/login');
         }
 
         const user = users[0];
+        const match = await bcrypt.compare(password, user.password);
 
-        // Verify password
-        const isPasswordValid = await verifyPassword(password, user.password);
-
-        if (!isPasswordValid) {
-            return res.render('login', { 
-                title: 'Login', 
-                error: 'Invalid username or password' 
-            });
+        if (!match) {
+            req.flash('error', 'Invalid username or password');
+            return res.redirect('/login');
         }
 
-        // Successful login logic (e.g., create session, redirect)
+        // Store user info in session
         req.session.userId = user.id;
-        console.log('Session after login:', req.session);
-        res.redirect('/dashboard');
+        req.session.role = user.role;
 
+        // Redirect based on role
+        if (user.role === 'admin') {
+            return res.redirect('/admin/dashboard');  // Make sure this matches your route
+        } else {
+            return res.redirect('/dashboard');
+        }
+        
     } catch (error) {
         console.error('Login error:', error);
-        res.render('login', { 
-            title: 'Login', 
-            error: 'An error occurred. Please try again.' 
-        });
+        req.flash('error', 'An error occurred during login');
+        res.redirect('/login');
     }
 });
 
