@@ -90,6 +90,57 @@
                 </div>
             </section>
 
+            <!-- Recent Logins -->
+            <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+                <h3 class="text-lg font-semibold mb-4">Recent Logins</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2">User</th>
+                                <th class="px-4 py-2">Last Login</th>
+                                <th class="px-4 py-2">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (recentLogins && recentLogins.length > 0) { %>
+                                <% recentLogins.forEach(function(login) { %>
+                                    <tr>
+                                        <td class="px-4 py-2"><%= login.first_name %> <%= login.last_name %></td>
+                                        <td class="px-4 py-2"><%= new Date(login.last_login).toLocaleString() %></td>
+                                        <td class="px-4 py-2">
+                                            <span class="px-2 py-1 rounded-full text-xs <%= login.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+                                                <%= login.active ? 'Online' : 'Offline' %>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="3" class="px-4 py-2 text-center text-gray-500">No recent login activity</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Department Summary -->
+            <% if (departments && departments.length > 0) { %>
+                <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Department Summary</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <% departments.forEach(function(dept) { %>
+                            <div class="border rounded p-4">
+                                <h4 class="font-medium"><%= dept.department %></h4>
+                                <p class="text-sm text-gray-600">Students: <%= dept.student_count %></p>
+                                <p class="text-sm text-gray-600">Courses: <%= dept.course_count %></p>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+            <% } %>
+
             <!-- Users Section -->
             <section id="users" class="mb-8">
                 <div class="flex justify-between items-center mb-4">
@@ -130,10 +181,34 @@
                                             <%= user.active ? 'Active' : 'Inactive' %>
                                         </span>
                                     </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <form action="/admin/users/<%= user.id %>/reset-password" method="POST" class="inline">
+                                            <button type="submit" 
+                                                    class="text-blue-600 hover:text-blue-900"
+                                                    onclick="return confirm('Reset password for this user?')">
+                                                Reset Password
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
                             <% }); %>
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Add bulk actions above users table -->
+                <div class="flex justify-end mb-4">
+                    <form action="/admin/users/bulk-status" method="POST" class="flex space-x-2">
+                        <select name="status" class="rounded border-gray-300">
+                            <option value="activate">Activate</option>
+                            <option value="deactivate">Deactivate</option>
+                        </select>
+                        <button type="submit" 
+                                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                onclick="return confirm('Update status for selected users?')">
+                            Update Selected
+                        </button>
+                    </form>
                 </div>
             </section>
         </div>
